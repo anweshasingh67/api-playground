@@ -1,9 +1,20 @@
+import { useState } from "react";
 function ResponseViewer({ response, error }) {
-  const handleCopy = () => {
-    if (response) {
-      navigator.clipboard.writeText(JSON.stringify(response.data, null, 2));
-    }
-  };
+  const [copied, setCopied] = useState(false);
+
+const handleCopy = () => {
+  if (response) {
+    const text = JSON.stringify(response.data, null, 2);
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+};
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
@@ -25,21 +36,28 @@ function ResponseViewer({ response, error }) {
             </>
           )}
           <button
-            onClick={handleCopy}
-            className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-lg text-sm transition-colors"
-          >
-            Copy
-          </button>
+          onClick={handleCopy}
+          className={`px-3 py-1 rounded-lg text-sm transition-colors ${copied ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"}`}
+        >
+          {copied ? "Copied!" : "Copy"}
+        </button>
         </div>
       </div>
 
-      <pre className="bg-black border border-zinc-800 rounded-xl p-4 min-h-[350px] overflow-auto text-zinc-300">
-        {error
-          ? `Error: ${error}`
-          : response
-          ? JSON.stringify(response.data, null, 2)
-          : `{\n  "message": "Response will appear here..."\n}`}
-      </pre>
+      {error ? (
+      <div className="bg-red-950 border border-red-800 rounded-xl p-4 min-h-[350px] flex items-center justify-center">
+      <div className="text-center">
+      <p className="text-red-400 text-lg font-semibold mb-2">Request Failed</p>
+      <p className="text-red-300 text-sm">{error}</p>
+      </div>
+    </div>
+    ) : (
+    <pre className="bg-black border border-zinc-800 rounded-xl p-4 min-h-[350px] overflow-auto text-zinc-300">
+    {response
+      ? JSON.stringify(response.data, null, 2)
+      : `{\n  "message": "Response will appear here..."\n}`}
+  </pre>
+)}
     </div>
   );
 }
