@@ -3,16 +3,15 @@ function RequestBuilder({
   setMethod,
   url,
   setUrl,
+  onSend,
+  loading,
 }) {
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-
       <h2 className="text-xl font-semibold mb-4">
         Request Builder
       </h2>
-
       <div className="flex gap-3">
-
         <select
           value={method}
           onChange={(e) => setMethod(e.target.value)}
@@ -31,13 +30,13 @@ function RequestBuilder({
         />
 
         <button
-          className="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-lg font-medium transition-colors"
+          onClick={onSend}
+          disabled={loading}
+          className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-900 px-5 py-2 rounded-lg font-medium transition-colors"
         >
-          Send
+          {loading ? "Sending..." : "Send"}
         </button>
-
       </div>
-
     </div>
   );
 }
