@@ -8,6 +8,10 @@ function HistoryPanel() {
       method: "POST",
       url: "api.example.com/users",
     },
+    {
+      method: "GET",
+      url: "jsonplaceholder.typicode.com/comments",
+    },
   ];
 
   return (
@@ -24,13 +28,24 @@ function HistoryPanel() {
             key={index}
             className="bg-zinc-800 border border-zinc-700 rounded-xl p-3"
           >
-            <div className="text-blue-400 font-medium">
-              {item.method}
+            <div className="flex items-center gap-2 mb-2">
+
+              <span
+                className={`px-2 py-1 rounded-md text-xs font-bold ${
+                  item.method === "GET"
+                    ? "bg-green-600"
+                    : "bg-orange-600"
+                }`}
+              >
+                {item.method}
+              </span>
+
             </div>
 
-            <div className="text-sm text-zinc-400 truncate">
+            <div className="text-sm text-zinc-400 break-all">
               {item.url}
             </div>
+
           </div>
         ))}
 

@@ -8,7 +8,7 @@ function ResponseViewer({ response }) {
           Response Viewer
         </h2>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
 
           <span className="px-3 py-1 rounded-full bg-green-600 text-sm font-medium">
             200 OK
@@ -18,7 +18,11 @@ function ResponseViewer({ response }) {
             127 ms
           </span>
 
-          <button className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-lg text-sm">
+          <span className="px-3 py-1 rounded-full bg-zinc-800 text-sm">
+            2.3 KB
+          </span>
+
+          <button className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-lg text-sm transition-colors">
             Copy
           </button>
 
