@@ -78,9 +78,19 @@ function App() {
           </div>
 
           <div className="hidden md:flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.7)]"></span>
-            <span className="text-sm text-zinc-400">Ready</span>
-          </div>
+  <span className={`h-2.5 w-2.5 rounded-full ${
+    loading
+      ? "bg-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.7)]"
+      : error
+      ? "bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.7)]"
+      : response
+      ? "bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.7)]"
+      : "bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.7)]"
+  }`}></span>
+  <span className="text-sm text-zinc-400">
+    {loading ? "Sending..." : error ? "Error" : response ? "Done" : "Ready"}
+  </span>
+</div>
         </div>
 
         <div className="grid xl:grid-cols-4 gap-6 items-start">

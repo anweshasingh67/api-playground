@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 function RequestBuilder({
   method,
   setMethod,
@@ -6,16 +8,29 @@ function RequestBuilder({
   onSend,
   loading,
 }) {
+  const [headers, setHeaders] = useState([
+    { key: "Content-Type", value: "application/json" }
+  ]);
+
+  const addHeader = () => {
+    setHeaders([...headers, { key: "", value: "" }]);
+  };
+
+  const updateHeader = (index, field, value) => {
+    const updated = [...headers];
+    updated[index][field] = value;
+    setHeaders(updated);
+  };
+
+  const removeHeader = (index) => {
+    setHeaders(headers.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-xl font-semibold text-white">
-          Request Builder
-        </h2>
-
-        <span className="text-xs text-zinc-500">
-          API Request
-        </span>
+        <h2 className="text-xl font-semibold text-white">Request Builder</h2>
+        <span className="text-xs text-zinc-500">API Request</span>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-3 mb-6">
@@ -47,37 +62,50 @@ function RequestBuilder({
         </button>
       </div>
 
-      <div className="border-t border-zinc-800 pt-5">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-zinc-300">
-            Request Headers
-          </h3>
+      {(method === "POST" || method === "PUT") && (
+        <div className="border-t border-zinc-800 pt-5">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-medium text-zinc-300">Request Headers</h3>
+            <span className="text-xs text-zinc-500">Optional</span>
+          </div>
 
-          <span className="text-xs text-zinc-500">
-            Optional
-          </span>
+          <div className="space-y-3">
+            {headers.map((header, index) => (
+              <div key={index} className="grid md:grid-cols-2 gap-3 items-center">
+                <input
+                  type="text"
+                  value={header.key}
+                  onChange={(e) => updateHeader(index, "key", e.target.value)}
+                  placeholder="Header name"
+                  className="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500"
+                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={header.value}
+                    onChange={(e) => updateHeader(index, "value", e.target.value)}
+                    placeholder="Header value"
+                    className="flex-1 bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500"
+                  />
+                  <button
+                    onClick={() => removeHeader(index)}
+                    className="text-zinc-500 hover:text-red-400 transition-colors px-2"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={addHeader}
+            className="mt-4 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            + Add Header
+          </button>
         </div>
-
-        <div className="grid md:grid-cols-2 gap-3">
-          <input
-            type="text"
-            placeholder="Content-Type"
-            className="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500"
-          />
-
-          <input
-            type="text"
-            placeholder="application/json"
-            className="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500"
-          />
-        </div>
-
-        <button
-          className="mt-4 text-sm text-blue-400 hover:text-blue-300 transition-colors"
-        >
-          + Add Header
-        </button>
-      </div>
+      )}
     </div>
   );
 }
