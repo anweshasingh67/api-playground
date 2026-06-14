@@ -1,7 +1,7 @@
-function HistoryPanel({ history, setUrl, setMethod }) {
+function HistoryPanel({ history, setUrl, setMethod, onClearHistory }) {
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl h-full">
-      <div className="flex items-center justify-between mb-5">
+      <div className="flex items-center justify-between gap-3 mb-5">
         <div>
           <h2 className="text-xl font-semibold text-white">
             Request History
@@ -11,9 +11,13 @@ function HistoryPanel({ history, setUrl, setMethod }) {
           </p>
         </div>
 
-        <span className="px-3 py-1 rounded-full bg-zinc-800 text-xs text-zinc-300 border border-zinc-700">
-          {history.length} saved
-        </span>
+        <button
+          onClick={onClearHistory}
+          disabled={history.length === 0}
+          className="px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-700 bg-zinc-800 text-zinc-300 hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          Clear History
+        </button>
       </div>
 
       {history.length === 0 ? (
@@ -27,7 +31,7 @@ function HistoryPanel({ history, setUrl, setMethod }) {
           </p>
         </div>
       ) : (
-        <div className="space-y-3 max-h-[450px] overflow-y-auto pr-1">
+        <div className="space-y-3 max-h-[620px] overflow-y-auto pr-2">
           {history.map((item, index) => (
             <button
               key={`${item.method}-${item.url}-${index}`}

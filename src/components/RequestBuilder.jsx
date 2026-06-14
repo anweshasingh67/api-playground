@@ -5,6 +5,8 @@ function RequestBuilder({
   setMethod,
   url,
   setUrl,
+  requestBody,
+  setRequestBody,
   onSend,
   loading,
 }) {
@@ -104,6 +106,27 @@ function RequestBuilder({
           >
             + Add Header
           </button>
+          <div className="border-t border-zinc-800 mt-6 pt-6">
+  <div className="flex items-center justify-between mb-3">
+    <h3 className="text-sm font-medium text-zinc-300">
+      Request Body (JSON)
+    </h3>
+    <span className="text-xs text-zinc-500">
+      Optional
+    </span>
+  </div>
+
+  <textarea
+    value={requestBody}
+    onChange={(e) => setRequestBody(e.target.value)}
+    placeholder={`{
+  "title": "Hardik",
+  "body": "Hackathon Test",
+  "userId": 1
+}`}
+    className="w-full h-44 bg-black border border-zinc-700 rounded-xl p-4 text-sm font-mono text-zinc-300 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+  />
+</div>
         </div>
       )}
     </div>

@@ -4,10 +4,12 @@ import RequestBuilder from "./components/RequestBuilder";
 import ResponseViewer from "./components/ResponseViewer";
 import HistoryPanel from "./components/HistoryPanel";
 import Footer from "./components/Footer";
+import StatsPanel from "./components/StatsPanel";
 
 function App() {
   const [method, setMethod] = useState("GET");
   const [url, setUrl] = useState("");
+  const [requestBody, setRequestBody] = useState("");
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -29,7 +31,22 @@ function App() {
 
     try {
       const startTime = Date.now();
-      const res = await fetch(url, { method });
+      const options = {
+  method,
+};
+
+if (
+  (method === "POST" || method === "PUT") &&
+  requestBody.trim()
+) {
+  options.headers = {
+    "Content-Type": "application/json",
+  };
+
+  options.body = requestBody;
+}
+
+const res = await fetch(url, options);
       const timeTaken = Date.now() - startTime;
       const text = await res.text();
 
@@ -51,17 +68,27 @@ function App() {
         data,
       });
 
-      const newEntry = { method, url };
+      const newEntry = {
+  method,
+  url,
+  status: res.status,
+  timeTaken,
+};
       setHistory((prevHistory) => {
         const updatedHistory = [newEntry, ...prevHistory];
         localStorage.setItem("api-history", JSON.stringify(updatedHistory));
         return updatedHistory;
       });
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Check the URL and try again.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleClearHistory = () => {
+    setHistory([]);
+    localStorage.removeItem("api-history");
   };
 
   return (
@@ -78,23 +105,13 @@ function App() {
           </div>
 
           <div className="hidden md:flex items-center gap-2">
-  <span className={`h-2.5 w-2.5 rounded-full ${
-    loading
-      ? "bg-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.7)]"
-      : error
-      ? "bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.7)]"
-      : response
-      ? "bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.7)]"
-      : "bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.7)]"
-  }`}></span>
-  <span className="text-sm text-zinc-400">
-    {loading ? "Sending..." : error ? "Error" : response ? "Done" : "Ready"}
-  </span>
-</div>
+            <span className="h-2.5 w-2.5 rounded-full bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.7)]" />
+            <span className="text-sm text-zinc-400">Ready</span>
+          </div>
         </div>
 
         <div className="grid xl:grid-cols-4 gap-6 items-start">
-          <div className="xl:col-span-3">
+          <div className="xl:col-span-3 space-y-6">
             <RequestBuilder
               method={method}
               setMethod={setMethod}
@@ -103,6 +120,8 @@ function App() {
               onSend={handleSend}
               loading={loading}
             />
+
+            <ResponseViewer response={response} error={error} />
           </div>
 
           <div className="xl:col-span-1">
@@ -110,13 +129,13 @@ function App() {
               history={history}
               setUrl={setUrl}
               setMethod={setMethod}
+              onClearHistory={handleClearHistory}
             />
           </div>
         </div>
-
-        <section className="pt-1">
-          <ResponseViewer response={response} error={error} />
-        </section>
+        <div className="mt-6">
+  <StatsPanel history={history} />
+</div>
       </main>
 
       <Footer />
