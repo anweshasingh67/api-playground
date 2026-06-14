@@ -1,16 +1,35 @@
-# React + Vite
+## API Playground
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Build • Test • Inspect API requests
 
-Currently, two official plugins are available:
+A lightweight, browser-based API testing tool built for developers who need to test APIs quickly — without the overhead of heavy desktop applications like Postman.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Live Demo
+[https://api-playground-taupe-omega.vercel.app/](https://api-playground-taupe-omega.vercel.app/)
 
-## React Compiler
+## Features
+- Send GET, POST, PUT, DELETE requests
+- View JSON responses with syntax highlighting
+- See status code, response time and size
+- Request history saved to localStorage
+- Click history to reuse past requests
+- Add custom headers for POST/PUT requests
+- Copy response with one click
+- Request stats (Total, Successful, Failed)
+- No login required, no installation needed
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
+- **React.js** — UI components and state management
+- **Vite** — fast development build tool
+- **Tailwind CSS** — styling and responsive design
+- **JavaScript (ES6+)** — core programming language
+- **Fetch API** — sending HTTP requests
+- **localStorage** — saving request history
+- **Vercel** — deployment and hosting
 
-## Expanding the ESLint configuration
+## Team
+- **Anwesha** — UI design, syntax highlighting, request stats, error handling, testing
+-  **Hardik** — Project setup, UI, state management, API logic, localStorage, deployment
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Hackathon
+Built for **Devlynix Buildathon 2.0** — Track 9: API Infrastructure
