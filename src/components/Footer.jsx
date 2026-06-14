@@ -5,7 +5,7 @@ function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-sm">
           
           <div className="text-zinc-500">
-            © 2025 API Playground
+            © 2026 API Playground
           </div>
 
           <div className="flex items-center gap-3 text-zinc-500">
